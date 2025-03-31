@@ -7,47 +7,47 @@ import { Button } from "./components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./components/ui/dropdown-menu"
 import { cn } from "./lib/utils"
 
-import Open1 from '@/assets/Open/1 UTG Opens.png';
-import Open2 from '@/assets/Open/2 MP Opens.png';
-import Open3 from '@/assets/Open/3 CO Opens.png';
-import Open4 from '@/assets/Open/4 BU Opens.png';
-import Open5 from '@/assets/Open/5 SB Opens.png';
-import Open6 from '@/assets/Open/6 UTG Opens (3B).png';
-import Open7 from '@/assets/Open/7 MP Opens (3B).png';
-import Open8 from '@/assets/Open/8 CO Opens (3B).png';
-import Open9 from '@/assets/Open/9 BU Opens (3B).png';
-import Open10 from '@/assets/Open/10 SB Opens (3B).png';
+import Open1 from './assets/Open/1 UTG Opens.png';
+import Open2 from './assets/Open/2 MP Opens.png';
+import Open3 from './assets/Open/3 CO Opens.png';
+import Open4 from './assets/Open/4 BU Opens.png';
+import Open5 from './assets/Open/5 SB Opens.png';
+import Open6 from './assets/Open/6 UTG Opens (3B).png';
+import Open7 from './assets/Open/7 MP Opens (3B).png';
+import Open8 from './assets/Open/8 CO Opens (3B).png';
+import Open9 from './assets/Open/9 BU Opens (3B).png';
+import Open10 from './assets/Open/10 SB Opens (3B).png';
 
-import vsUTG1 from '@/assets/vsOpen/1 MP vs UTG.png';
-import vsSBvsBU from '@/assets/vsOpen/10 SB vs BU.png';
-import vsBBvsUTG from '@/assets/vsOpen/11 BB vs UTG.png';
-import vsBBvsMP from '@/assets/vsOpen/12 BB vs MP.png';
-import vsBBvsCO from '@/assets/vsOpen/13 BB vs CO.png';
-import vsBBvsBU from '@/assets/vsOpen/14 BB vs BU.png';
-import vsBBvsSB from '@/assets/vsOpen/15 BB vs SB.png';
-import vsMPvsUTG4B from '@/assets/vsOpen/16 MP vs UTG (4B).png';
-import vsCOvsUTG4B from '@/assets/vsOpen/17 CO vs UTG (4B).png';
-import vsCOvsMP4B from '@/assets/vsOpen/18 CO vs MP (4B).png';
-import vsBUvsUTG4B from '@/assets/vsOpen/19 BU vs UTG (4B).png';
-import vsCOvsUTG from '@/assets/vsOpen/2 CO vs UTG.png';
-import vsBUvsMP4B from '@/assets/vsOpen/20 BU vs MP (4B).png';
-import vsBUvsCO4B from '@/assets/vsOpen/21 BU vs CO (4B).png';
-import vsSBvsUTG4B from '@/assets/vsOpen/22 SB vs UTG (4B).png';
-import vsSBvsMP4B from '@/assets/vsOpen/23 SB vs MP (4B).png';
-import vsSBvsCO4B from '@/assets/vsOpen/24 SB vs CO (4B).png';
-import vsSBvsBU4B from '@/assets/vsOpen/25 SB vs BU (4B).png';
-import vsBBvsUTG4B from '@/assets/vsOpen/26 BB vs UTG (4B).png';
-import vsBBvsMP4B from '@/assets/vsOpen/27 BB vs MP (4B).png';
-import vsBBvsCO4B from '@/assets/vsOpen/28 BB vs CO (4B).png';
-import vsBBvsBU4B from '@/assets/vsOpen/29 BB vs BU (4B).png';
-import vsCOvsMP from '@/assets/vsOpen/3 CO vs MP.png';
-import vsBBvsSB4B from '@/assets/vsOpen/30 BB vs SB (4B).png';
-import vsBUvsUTG from '@/assets/vsOpen/4 BU vs UTG.png';
-import vsBUvsMP from '@/assets/vsOpen/5 BU vs MP.png';
-import vsBUvsCO from '@/assets/vsOpen/6 BU vs CO.png';
-import vsSBvsUTG from '@/assets/vsOpen/7 SB vs UTG.png';
-import vsSBvsMP from '@/assets/vsOpen/8 SB vs MP.png';
-import vsSBvsCO from '@/assets/vsOpen/9 SB vs CO.png';
+import vsUTG1 from './assets/vsOpen/1 MP vs UTG.png';
+import vsSBvsBU from './assets/vsOpen/10 SB vs BU.png';
+import vsBBvsUTG from './assets/vsOpen/11 BB vs UTG.png';
+import vsBBvsMP from './assets/vsOpen/12 BB vs MP.png';
+import vsBBvsCO from './assets/vsOpen/13 BB vs CO.png';
+import vsBBvsBU from './assets/vsOpen/14 BB vs BU.png';
+import vsBBvsSB from './assets/vsOpen/15 BB vs SB.png';
+import vsMPvsUTG4B from './assets/vsOpen/16 MP vs UTG (4B).png';
+import vsCOvsUTG4B from './assets/vsOpen/17 CO vs UTG (4B).png';
+import vsCOvsMP4B from './assets/vsOpen/18 CO vs MP (4B).png';
+import vsBUvsUTG4B from './assets/vsOpen/19 BU vs UTG (4B).png';
+import vsCOvsUTG from './assets/vsOpen/2 CO vs UTG.png';
+import vsBUvsMP4B from './assets/vsOpen/20 BU vs MP (4B).png';
+import vsBUvsCO4B from './assets/vsOpen/21 BU vs CO (4B).png';
+import vsSBvsUTG4B from './assets/vsOpen/22 SB vs UTG (4B).png';
+import vsSBvsMP4B from './assets/vsOpen/23 SB vs MP (4B).png';
+import vsSBvsCO4B from './assets/vsOpen/24 SB vs CO (4B).png';
+import vsSBvsBU4B from './assets/vsOpen/25 SB vs BU (4B).png';
+import vsBBvsUTG4B from './assets/vsOpen/26 BB vs UTG (4B).png';
+import vsBBvsMP4B from './assets/vsOpen/27 BB vs MP (4B).png';
+import vsBBvsCO4B from './assets/vsOpen/28 BB vs CO (4B).png';
+import vsBBvsBU4B from './assets/vsOpen/29 BB vs BU (4B).png';
+import vsCOvsMP from './assets/vsOpen/3 CO vs MP.png';
+import vsBBvsSB4B from './assets/vsOpen/30 BB vs SB (4B).png';
+import vsBUvsUTG from './assets/vsOpen/4 BU vs UTG.png';
+import vsBUvsMP from './assets/vsOpen/5 BU vs MP.png';
+import vsBUvsCO from './assets/vsOpen/6 BU vs CO.png';
+import vsSBvsUTG from './assets/vsOpen/7 SB vs UTG.png';
+import vsSBvsMP from './assets/vsOpen/8 SB vs MP.png';
+import vsSBvsCO from './assets/vsOpen/9 SB vs CO.png';
 
 const imageOptions = [
   {
@@ -172,7 +172,7 @@ export default function ImageSelector() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4  w-full">
 
 <div className="flex flex-col justify-center gap-3 w-full">
-            <div className="flex">
+            <div className="flex gap-1">
               <Button variant="outline" className={`w-full sm:w-auto ${images != imageOptions ? 'bg-muted' : ''}`} onClick={() => {setImages(imageOptions); setSelectedOption(imageOptions[0])}}>
                     Open
                     {images === imageOptions && <Check className="h-4 w-4 ml-2" />}
@@ -183,7 +183,7 @@ export default function ImageSelector() {
               </Button>
             </div>
 
-            <div className="flex flex-wrap">
+            <div className="flex flex-wrap gap-1">
             {images.map((option) => (
                   <Button
                     variant="outline"
