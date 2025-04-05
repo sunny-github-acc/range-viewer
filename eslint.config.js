@@ -24,7 +24,13 @@ export default defineConfig([
       'no-tabs': 'warn',
       'comma-dangle': ['warn', 'never'],
       '@typescript-eslint/no-unused-vars': 'warn',
-      '@typescript-eslint/explicit-module-boundary-types': 'off'
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      'react/self-closing-comp': ['warn', {
+        component: true,
+        html: false
+      }],
+      'react/jsx-props-no-multi-spaces': 'warn'
     }
   },
   // TypeScript-specific rules
