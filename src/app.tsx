@@ -1,9 +1,10 @@
-import ImageSelector from "./image-selector";
+import ImageSelector from './image-selector';
+import { Toaster } from './components/ui/toaster';
 
-function App() {
-  return (
-      <ImageSelector />
-  );
-}
+const App = () : JSX.Element =>
+	<>
+		<ImageSelector />
+		<Toaster />
+	</>;
 
 export default App;

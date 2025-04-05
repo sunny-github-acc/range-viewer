@@ -2,51 +2,59 @@
 
 import { useEffect, useState, useRef } from 'react';
 
+import { Cloudinary } from '@cloudinary/url-gen';
+import { auto } from '@cloudinary/url-gen/actions/resize';
+import { autoGravity } from '@cloudinary/url-gen/qualifiers/gravity';
+import { AdvancedImage } from '@cloudinary/react';
+
 import { cn } from './lib/utils';
 
 import { Button } from './components/ui/button';
 import { Separator } from './components/ui/separator';
+import UploadWidget from './upload-widget';
 
-import UTG from './assets/Open/1 UTG Opens.png';
-import MP from './assets/Open/2 MP Opens.png';
-import CO from './assets/Open/3 CO Opens.png';
-import BU from './assets/Open/4 BU Opens.png';
-import SB from './assets/Open/5 SB Opens.png';
-import UTG3B from './assets/Open/6 UTG Opens (3B).png';
-import MP3B from './assets/Open/7 MP Opens (3B).png';
-import CO3B from './assets/Open/8 CO Opens (3B).png';
-import BU3B from './assets/Open/9 BU Opens (3B).png';
-import SB3B from './assets/Open/10 SB Opens (3B).png';
-import vsMPvsUTG from './assets/vsOpen/1 MP vs UTG.png';
-import vsCOvsUTG from './assets/vsOpen/2 CO vs UTG.png';
-import vsCOvsMP from './assets/vsOpen/3 CO vs MP.png';
-import vsBUvsUTG from './assets/vsOpen/4 BU vs UTG.png';
-import vsBUvsMP from './assets/vsOpen/5 BU vs MP.png';
-import vsBUvsCO from './assets/vsOpen/6 BU vs CO.png';
-import vsSBvsUTG from './assets/vsOpen/7 SB vs UTG.png';
-import vsSBvsMP from './assets/vsOpen/8 SB vs MP.png';
-import vsSBvsCO from './assets/vsOpen/9 SB vs CO.png';
-import vsSBvsBU from './assets/vsOpen/10 SB vs BU.png';
-import vsBBvsUTG from './assets/vsOpen/11 BB vs UTG.png';
-import vsBBvsMP from './assets/vsOpen/12 BB vs MP.png';
-import vsBBvsCO from './assets/vsOpen/13 BB vs CO.png';
-import vsBBvsBU from './assets/vsOpen/14 BB vs BU.png';
-import vsBBvsSB from './assets/vsOpen/15 BB vs SB.png';
-import vsMPvsUTG4B from './assets/vsOpen/16 MP vs UTG (4B).png';
-import vsCOvsUTG4B from './assets/vsOpen/17 CO vs UTG (4B).png';
-import vsCOvsMP4B from './assets/vsOpen/18 CO vs MP (4B).png';
-import vsBUvsUTG4B from './assets/vsOpen/19 BU vs UTG (4B).png';
-import vsBUvsMP4B from './assets/vsOpen/20 BU vs MP (4B).png';
-import vsBUvsCO4B from './assets/vsOpen/21 BU vs CO (4B).png';
-import vsSBvsUTG4B from './assets/vsOpen/22 SB vs UTG (4B).png';
-import vsSBvsMP4B from './assets/vsOpen/23 SB vs MP (4B).png';
-import vsSBvsCO4B from './assets/vsOpen/24 SB vs CO (4B).png';
-import vsSBvsBU4B from './assets/vsOpen/25 SB vs BU (4B).png';
-import vsBBvsUTG4B from './assets/vsOpen/26 BB vs UTG (4B).png';
-import vsBBvsMP4B from './assets/vsOpen/27 BB vs MP (4B).png';
-import vsBBvsCO4B from './assets/vsOpen/28 BB vs CO (4B).png';
-import vsBBvsBU4B from './assets/vsOpen/29 BB vs BU (4B).png';
-import vsBBvsSB4B from './assets/vsOpen/30 BB vs SB (4B).png';
+const imageNames = {
+	'UTG': '1_UTG_Opens.png',
+	'MP': '2_MP_Opens.png',
+	'CO': '3_CO_Opens.png',
+	'BU': '4_BU_Opens.png',
+	'SB': '5_SB_Opens.png',
+	'UTG3B': '6_UTG_Opens_3B.png',
+	'MP3B': '7_MP_Opens_3B.png',
+	'CO3B': '8_CO_Opens_3B.png',
+	'BU3B': '9_BU_Opens_3B.png',
+	'SB3B': '10_SB_Opens_3B.png',
+	'vsMPvsUTG': '1_MP_vs_UTG.png',
+	'vsCOvsUTG': '2_CO_vs_UTG.png',
+	'vsCOvsMP': '3_CO_vs_MP.png',
+	'vsBUvsUTG': '4_BU_vs_UTG.png',
+	'vsBUvsMP': '5_BU_vs_MP.png',
+	'vsBUvsCO': '6_BU_vs_CO.png',
+	'vsSBvsUTG': '7_SB_vs_UTG.png',
+	'vsSBvsMP': '8_SB_vs_MP.png',
+	'vsSBvsCO': '9_SB_vs_CO.png',
+	'vsSBvsBU': '10_SB_vs_BU.png',
+	'vsBBvsUTG': '11_BB_vs_UTG.png',
+	'vsBBvsMP': '12_BB_vs_MP.png',
+	'vsBBvsCO': '13_BB_vs_CO.png',
+	'vsBBvsBU': '14_BB_vs_BU.png',
+	'vsBBvsSB': '15_BB_vs_SB.png',
+	'vsMPvsUTG4B': '16_MP_vs_UTG_4B.png',
+	'vsCOvsUTG4B': '17_CO_vs_UTG_4B.png',
+	'vsCOvsMP4B': '18_CO_vs_MP_4B.png',
+	'vsBUvsUTG4B': '19_BU_vs_UTG_4B.png',
+	'vsBUvsMP4B': '20_BU_vs_MP_4B.png',
+	'vsBUvsCO4B': '21_BU_vs_CO_4B.png',
+	'vsSBvsUTG4B': '22_SB_vs_UTG_4B.png',
+	'vsSBvsMP4B': '23_SB_vs_MP_4B.png',
+	'vsSBvsCO4B': '24_SB_vs_CO_4B.png',
+	'vsSBvsBU4B': '25_SB_vs_BU_4B.png',
+	'vsBBvsUTG4B': '26_BB_vs_UTG_4B.png',
+	'vsBBvsMP4B': '27_BB_vs_MP_4B.png',
+	'vsBBvsCO4B': '28_BB_vs_CO_4B.png',
+	'vsBBvsBU4B': '29_BB_vs_BU_4B.png',
+	'vsBBvsSB4B': '30_BB_vs_SB_4B.png'
+};
 
 interface ImageOption {
   id: string;
@@ -67,13 +75,13 @@ const imageOptions = [
 	{
 		id: 'utg',
 		label: 'UTG',
-		src: UTG,
+		src: imageNames.UTG,
 		alt: 'UTG',
 		description: 'UTG',
 		sub: {
 			id: 'utg3b',
 			label: 'UTG (3B)',
-			src: UTG3B,
+			src: imageNames.UTG3B,
 			alt: 'UTG (3B)',
 			description: 'UTG (3B)'
 		}
@@ -81,13 +89,13 @@ const imageOptions = [
 	{
 		id: 'mp',
 		label: 'MP',
-		src: MP,
+		src: imageNames.MP,
 		alt: 'MP',
 		description: 'MP',
 		sub: {
 			id: 'mp3b',
 			label: 'MP (3B)',
-			src: MP3B,
+			src: imageNames.MP3B,
 			alt: 'MP (3B)',
 			description: 'MP (3B)'
 		}
@@ -95,13 +103,13 @@ const imageOptions = [
 	{
 		id: 'co',
 		label: 'CO',
-		src: CO,
+		src: imageNames.CO,
 		alt: 'CO',
 		description: 'CO',
 		sub: {
 			id: 'co3b',
 			label: 'CO (3B)',
-			src: CO3B,
+			src: imageNames.CO3B,
 			alt: 'CO (3B)',
 			description: 'CO (3B)'
 		}
@@ -109,13 +117,13 @@ const imageOptions = [
 	{
 		id: 'bu',
 		label: 'BU',
-		src: BU,
+		src: imageNames.BU,
 		alt: 'BU',
 		description: 'BU',
 		sub: {
 			id: 'bu3b',
 			label: 'BU (3B)',
-			src: BU3B,
+			src: imageNames.BU3B,
 			alt: 'BU (3B)',
 			description: 'BU (3B)'
 		}
@@ -123,13 +131,13 @@ const imageOptions = [
 	{
 		id: 'sb',
 		label: 'SB',
-		src: SB,
+		src: imageNames.SB,
 		alt: 'SB',
 		description: 'SB',
 		sub: {
 			id: 'sb3b',
 			label: 'SB (3B)',
-			src: SB3B,
+			src: imageNames.SB3B,
 			alt: 'SB (3B)',
 			description: 'SB (3B)'
 		}
@@ -140,13 +148,13 @@ const vsImageOptions = [
 	{
 		id: 'vsMPvsUTG',
 		label: 'MP vs UTG',
-		src: vsMPvsUTG,
+		src: imageNames.vsMPvsUTG,
 		alt: 'MP vs UTG',
 		description: 'MP vs UTG',
 		sub: {
 			id: 'vsMPvsUTG4B',
 			label: 'MP vs UTG (4B)',
-			src: vsMPvsUTG4B,
+			src: imageNames.vsMPvsUTG4B,
 			alt: 'MP vs UTG (4B)',
 			description: 'MP vs UTG (4B)'
 		}
@@ -154,13 +162,13 @@ const vsImageOptions = [
 	{
 		id: 'vsCOvsUTG',
 		label: 'CO vs UTG',
-		src: vsCOvsUTG,
+		src: imageNames.vsCOvsUTG,
 		alt: 'CO vs UTG',
 		description: 'CO vs UTG',
 		sub: {
 			id: 'vsCOvsUTG4B',
 			label: 'CO vs UTG (4B)',
-			src: vsCOvsUTG4B,
+			src: imageNames.vsCOvsUTG4B,
 			alt: 'CO vs UTG (4B)',
 			description: 'CO vs UTG (4B)'
 		}
@@ -168,13 +176,13 @@ const vsImageOptions = [
 	{
 		id: 'vsCOvsMP',
 		label: 'CO vs MP',
-		src: vsCOvsMP,
+		src: imageNames.vsCOvsMP,
 		alt: 'CO vs MP',
 		description: 'CO vs MP',
 		sub: {
 			id: 'vsCOvsMP4B',
 			label: 'CO vs MP (4B)',
-			src: vsCOvsMP4B,
+			src: imageNames.vsCOvsMP4B,
 			alt: 'CO vs MP (4B)',
 			description: 'CO vs MP (4B)'
 		}
@@ -182,13 +190,13 @@ const vsImageOptions = [
 	{
 		id: 'vsBUvsUTG',
 		label: 'BU vs UTG',
-		src: vsBUvsUTG,
+		src: imageNames.vsBUvsUTG,
 		alt: 'BU vs UTG',
 		description: 'BU vs UTG',
 		sub: {
 			id: 'vsBUvsUTG4B',
 			label: 'BU vs UTG (4B)',
-			src: vsBUvsUTG4B,
+			src: imageNames.vsBUvsUTG4B,
 			alt: 'BU vs UTG (4B)',
 			description: 'BU vs UTG (4B)'
 		}
@@ -196,13 +204,13 @@ const vsImageOptions = [
 	{
 		id: 'vsBUvsMP',
 		label: 'BU vs MP',
-		src: vsBUvsMP,
+		src: imageNames.vsBUvsMP,
 		alt: 'BU vs MP',
 		description: 'BU vs MP',
 		sub: {
 			id: 'vsBUvsMP4B',
 			label: 'BU vs MP (4B)',
-			src: vsBUvsMP4B,
+			src: imageNames.vsBUvsMP4B,
 			alt: 'BU vs MP (4B)',
 			description: 'BU vs MP (4B)'
 		}
@@ -210,13 +218,13 @@ const vsImageOptions = [
 	{
 		id: 'vsBUvsCO',
 		label: 'BU vs CO',
-		src: vsBUvsCO,
+		src: imageNames.vsBUvsCO,
 		alt: 'BU vs CO',
 		description: 'BU vs CO',
 		sub: {
 			id: 'vsBUvsCO4B',
 			label: 'BU vs CO (4B)',
-			src: vsBUvsCO4B,
+			src: imageNames.vsBUvsCO4B,
 			alt: 'BU vs CO (4B)',
 			description: 'BU vs CO (4B)'
 		}
@@ -224,13 +232,13 @@ const vsImageOptions = [
 	{
 		id: 'vsSBvsUTG',
 		label: 'SB vs UTG',
-		src: vsSBvsUTG,
+		src: imageNames.vsSBvsUTG,
 		alt: 'SB vs UTG',
 		description: 'SB vs UTG',
 		sub: {
 			id: 'vsSBvsUTG4B',
 			label: 'SB vs UTG (4B)',
-			src: vsSBvsUTG4B,
+			src: imageNames.vsSBvsUTG4B,
 			alt: 'SB vs UTG (4B)',
 			description: 'SB vs UTG (4B)'
 		}
@@ -238,13 +246,13 @@ const vsImageOptions = [
 	{
 		id: 'vsSBvsMP',
 		label: 'SB vs MP',
-		src: vsSBvsMP,
+		src: imageNames.vsSBvsMP,
 		alt: 'SB vs MP',
 		description: 'SB vs MP',
 		sub: {
 			id: 'vsSBvsMP4B',
 			label: 'SB vs MP (4B)',
-			src: vsSBvsMP4B,
+			src: imageNames.vsSBvsMP4B,
 			alt: 'SB vs MP (4B)',
 			description: 'SB vs MP (4B)'
 		}
@@ -252,13 +260,13 @@ const vsImageOptions = [
 	{
 		id: 'vsSBvsCO',
 		label: 'SB vs CO',
-		src: vsSBvsCO,
+		src: imageNames.vsSBvsCO,
 		alt: 'SB vs CO',
 		description: 'SB vs CO',
 		sub: {
 			id: 'vsSBvsCO4B',
 			label: 'SB vs CO (4B)',
-			src: vsSBvsCO4B,
+			src: imageNames.vsSBvsCO4B,
 			alt: 'SB vs CO (4B)',
 			description: 'SB vs CO (4B)'
 		}
@@ -266,13 +274,13 @@ const vsImageOptions = [
 	{
 		id: 'vsSBvsBU',
 		label: 'SB vs BU',
-		src: vsSBvsBU,
+		src: imageNames.vsSBvsBU,
 		alt: 'SB vs BU',
 		description: 'SB vs BU',
 		sub: {
 			id: 'vsSBvsBU4B',
 			label: 'SB vs BU (4B)',
-			src: vsSBvsBU4B,
+			src: imageNames.vsSBvsBU4B,
 			alt: 'SB vs BU (4B)',
 			description: 'SB vs BU (4B)'
 		}
@@ -280,13 +288,13 @@ const vsImageOptions = [
 	{
 		id: 'vsBBvsUTG',
 		label: 'BB vs UTG',
-		src: vsBBvsUTG,
+		src: imageNames.vsBBvsUTG,
 		alt: 'BB vs UTG',
 		description: 'BB vs UTG',
 		sub: {
 			id: 'vsBBvsUTG4B',
 			label: 'BB vs UTG (4B)',
-			src: vsBBvsUTG4B,
+			src: imageNames.vsBBvsUTG4B,
 			alt: 'BB vs UTG (4B)',
 			description: 'BB vs UTG (4B)'
 		}
@@ -294,13 +302,13 @@ const vsImageOptions = [
 	{
 		id: 'vsBBvsMP',
 		label: 'BB vs MP',
-		src: vsBBvsMP,
+		src: imageNames.vsBBvsMP,
 		alt: 'BB vs MP',
 		description: 'BB vs MP',
 		sub: {
 			id: 'vsBBvsMP4B',
 			label: 'BB vs MP (4B)',
-			src: vsBBvsMP4B,
+			src: imageNames.vsBBvsMP4B,
 			alt: 'BB vs MP (4B)',
 			description: 'BB vs MP (4B)'
 		}
@@ -308,13 +316,13 @@ const vsImageOptions = [
 	{
 		id: 'vsBBvsCO',
 		label: 'BB vs CO',
-		src: vsBBvsCO,
+		src: imageNames.vsBBvsCO,
 		alt: 'BB vs CO',
 		description: 'BB vs CO',
 		sub: {
 			id: 'vsBBvsCO4B',
 			label: 'BB vs CO (4B)',
-			src: vsBBvsCO4B,
+			src: imageNames.vsBBvsCO4B,
 			alt: 'BB vs CO (4B)',
 			description: 'BB vs CO (4B)'
 		}
@@ -322,13 +330,13 @@ const vsImageOptions = [
 	{
 		id: 'vsBBvsBU',
 		label: 'BB vs BU',
-		src: vsBBvsBU,
+		src: imageNames.vsBBvsBU,
 		alt: 'BB vs BU',
 		description: 'BB vs BU',
 		sub: {
 			id: 'vsBBvsBU4B',
 			label: 'BB vs BU (4B)',
-			src: vsBBvsBU4B,
+			src: imageNames.vsBBvsBU4B,
 			alt: 'BB vs BU (4B)',
 			description: 'BB vs BU (4B)'
 		}
@@ -336,13 +344,13 @@ const vsImageOptions = [
 	{
 		id: 'vsBBvsSB',
 		label: 'BB vs SB',
-		src: vsBBvsSB,
+		src: imageNames.vsBBvsSB,
 		alt: 'BB vs SB',
 		description: 'BB vs SB',
 		sub: {
 			id: 'vsBBvsSB4B',
 			label: 'BB vs SB (4B)',
-			src: vsBBvsSB4B,
+			src: imageNames.vsBBvsSB4B,
 			alt: 'BB vs SB (4B)',
 			description: 'BB vs SB (4B)'
 		}
@@ -355,8 +363,11 @@ export default function ImageSelector(): JSX.Element {
 	const [isSub, setIsSub] = useState(false);
 	const [prevOption, setPrevOption] = useState(0);
 	const [prevSub, setPrevSub] = useState(false);
+	const [fetchedImages, setFetchedImages] = useState<{ [key: string]: any }>({});
+	const [isLoading, setIsLoading] = useState(false);
 
-	const buttonRef = useRef<HTMLButtonElement | null>(null);
+	const cld = new Cloudinary({ cloud: { cloudName: 'dgxaoqjyu' } });
+
 	const option = isSub ? selectedOption.sub : selectedOption;
 	const buttonStyles = 'w-full sm:w-auto hover:bg-black hover:border-gray-400 min-w-[130px]';
 
@@ -370,10 +381,7 @@ export default function ImageSelector(): JSX.Element {
 			setPrevOption(images.findIndex((item) => item.id === selectedOption.id));
 			setIsSub(prevSub);
 			setPrevSub(isSub);
-		}
-
-		if (buttonRef.current) {
-			setTimeout(() => buttonRef?.current?.scrollIntoView({ behavior: 'smooth' }), 0);
+			setImage(updatedOptions[prevOption], prevSub);
 		}
 	};
 
@@ -381,22 +389,52 @@ export default function ImageSelector(): JSX.Element {
 		if (option) {
 			setSelectedOption(option);
 			setIsSub(false);
+			setImage(option, false);
 		} else {
 			setIsSub(true);
+			setImage(selectedOption, true);
 		}
+	};
+
+	const setImage = (image: ImageOption, isSub: boolean) => {
+		const imageName = isSub ? image.sub.src : image.src;
+
+		if (fetchedImages[imageName]) {
+			return;
+		}
+
+		setIsLoading(true);
+
+		const img = cld
+			.image(imageName)
+			.format('auto')
+			.quality('auto')
+			.resize(auto().gravity(autoGravity()));
+
+		setFetchedImages((prev) => ({
+			...prev,
+			[imageName]: img
+		}));
 	};
 
 	useEffect(() => {
 		document.documentElement.classList.add('dark');
+		setImage(selectedOption, false);
 	}, []);
 
 	return (
 		<div className="dark flex justify-center overflow-hidden items-center p-6 bg-background text-foreground transition-colors duration-200">
 			<div className="w-full space-y-8 flex flex-col items-center justify-center  mx-[10%]">
-				<img
-					src={option.src}
-					alt={option.alt}
-					className="w-full max-h-[75vh] object-contain transition-all duration-300"
+				<UploadWidget img={
+					<AdvancedImage
+						cldImg={fetchedImages[option.src]}
+						className={`
+              w-full max-h-[75vh] object-contain transition-all duration-300
+              ${isLoading ? 'opacity-50' : 'opacity-100'}
+            `}
+						onLoad={() =>  setIsLoading(false)}
+					/>
+				}
 				/>
 
 				<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4  w-full">
@@ -440,7 +478,6 @@ export default function ImageSelector(): JSX.Element {
 
 						<div className="flex flex-wrap gap-1">
 							<Button
-								ref={buttonRef}
 								variant="outline"
 								onClick={() => handleSubButton(null)}
 								className={cn(
